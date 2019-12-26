@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-4.4.1/css/bootstrap.min.css' %}">
+    <script type="text/javascript" src="{% static 'bootstrap-4.4.1/js/jQuery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'bootstrap-4.4.1/js/popper.js' %}"></script>
+    <script type="text/javascript" rel="script" src="{% static 'bootstrap-4.4.1/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" rel="script" src="{% static 'fontawesome/js/all.min.js' %}"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head_content %}
+    {% endblock %}
+    {{ form.media }}
+    <title>{% block title %}Title{% endblock %}</title>
+</head>
+<body>
+{% include 'base/navbar.html' %}
+<div class="container">
+    {% include 'base/help-messages.html' %}
+    {% block body_content %}
+    {% endblock %}
+</div>
+</body>
+</html>

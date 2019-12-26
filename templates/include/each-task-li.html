@@ -1,0 +1,11 @@
+<li class="list-group-item d-flex justify-content-between align-items-center" id="{{ tk.pk }}">
+    <div class="col {% if tk.is_complete %}strikethrough{% endif %}">{{ tk.title }}</div>
+    <div class="col-auto">
+        {% if tk.is_complete %}
+            <i class="check-task far fa-2x fa-check-square" id="{{ tk.id }}"></i>
+        {% else %}
+            <i class="check-task far fa-2x fa-square" id="{{ tk.id }}"></i>
+        {% endif %}
+    </div>
+    <span><i class="task-remove-btn fa fa-2x fa-eraser" style="color: darkorange"></i></span>
+</li>

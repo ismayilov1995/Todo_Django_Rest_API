@@ -1,0 +1,17 @@
+<div class="card" id="{{ td.pk }}">
+    <div class="card-header">
+    <div class="row justify-content-center">{{ td.title }}</div>
+    <div class="row justify-content-center"><small>{{ td.created_date }}</small></div>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for tk in td.get_child_tasks %}
+            {% include 'include/each-task-li.html' %}
+        {% endfor %}
+        <div class="sub-task">
+        </div>
+        <li class="todo-add-remove-li list-group-item d-flex justify-content-center align-items-center">
+            <i class="task-add-btn fa fa-2x fa-plus mr-2" style="color: darkorange"></i>
+            <i class="todo-remove-btn far fa-2x fa-trash-alt ml-2" style="color: darkorange"></i>
+        </li>
+    </ul>
+</div>

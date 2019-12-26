@@ -1,0 +1,139 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block head_content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/general.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/checkbox.css' %}">
+    <script type="text/javascript" rel="script">
+        $(document).ready(function () {
+            var $window = $(this);
+            var $remove_url = {% url 'removeTodo' %}
+                $('#add-todo').attr('disabled', true);
+            $window.on('click', '#clear-todo', function () {
+                $(this).closest('#new_todo_div').find('input').val('')
+            }).on('keyup', function () {
+                var text_area = $('#task-input').val();
+                if (text_area !== '')
+                    $('#add-todo').attr('disabled', false);
+                else $('#add-todo').attr('disabled', true);
+            }).on('submit', '#new-todo-form', function (e) {
+                e.preventDefault();
+                $form = $(this);
+                $list = $('#todo-card-list');
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'content': $('#task-input').val(),
+                    },
+                    beforeSend: function () {
+                        if ($('#task-input').val() === '') {
+                            alert("Birshey daxil edin");
+                        }
+                    },
+                    success: function (data) {
+                        if (data.is_valid) {
+                            $('#task-input').val('');
+                            $list.prepend(data.html);
+                        }
+                    }
+                })
+            }).on('click', '.todo-remove-btn', function () {
+                todo_pk = $(this).closest('.card').attr('id');
+                todo_div = $(this).closest('.card');
+                $.ajax({
+                    url: {% url 'removeTodo' %},
+                    dataType: 'json',
+                    data: {'pk': todo_pk},
+                    success: function (data) {
+                        todo_div.remove();
+                    }
+                })
+            }).on('click', '.task-remove-btn', function () {
+                task_pk = $(this).closest('li').attr('id');
+                todo_id = $(this).closest('.card').attr('id');
+                todo_div = $(this).closest('.card');
+                task_li = $(this).closest('li');
+                $.ajax({
+                    url: {% url 'removeTask' %},
+                    dataType: 'json',
+                    data: {'pk': task_pk, 'todo_id': todo_id},
+                    success: function (data) {
+                        task_li.remove();
+                        if (!data.has_todo) {
+                            todo_div.remove();
+                        }
+                    }
+                })
+            }).on('click', '.task-add-btn', function () {
+                ul = $(this).closest('ul').find('.sub-task');
+                $.ajax({
+                    url: {% url 'addTask' %},
+                    dataType: 'json',
+                    success: function (data) {
+                        ul.append(data.html);
+                    }
+                })
+            }).on('submit', '#add-task-form', function (e) {
+                e.preventDefault();
+                $form = $(this);
+                $todo_id = $form.closest('.card').attr('id');
+                task_li = $form.closest('li');
+                new_task_li = $form.closest('ul').find('.sub-task');
+                $.ajax({
+                    url: $form.attr('action'),
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                        'todo_id': $todo_id,
+                        'content': $('#sub-task-input').val(),
+                    },
+                    success: function (data) {
+                        if (data.is_valid) {
+                            $('#sub-task-input').val('');
+                            task_li.remove();
+                            new_task_li.append(data.html);
+                        }
+                    }
+                })
+            }).on('click', '#cancel-task', function () {
+                $(this).closest('li').remove();
+            }).on('click', '.check-task', function () {
+                task_id = $(this).closest('li').attr('id');
+                cb_tag = $(this).closest('svg');
+                task_name = $(this).closest('li').find('.col');
+                $.ajax({
+                    url: {% url 'checkTask' %},
+                    dataType: 'json',
+                    data: {'checked_task': task_id},
+                    success: function (data) {
+                        if (data.is_checked) {
+                            cb_tag.removeClass('fa-square');
+                            cb_tag.addClass('fa-check-square');
+                            task_name.addClass('strikethrough');
+                        } else {
+                            task_name.removeClass('strikethrough');
+                            cb_tag.removeClass('fa-check-square');
+                            cb_tag.addClass('fa-square');
+                        }
+
+                    }
+                })
+            })
+        })
+    </script>
+
+{% endblock %}
+{% block body_content %}
+    {% include 'base/modal/delete-modal.html' %}
+    <div class="col mt-5">
+        <h3>Tapsiriqlar</h3>
+        <hr>
+        <div id="new_todo_div">
+            {% include 'include/one-todo-add-view.html' %}
+            {% include 'include/each-todo-card.html' %}
+        </div>
+    </div>
+{% endblock %}

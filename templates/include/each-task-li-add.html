@@ -1,0 +1,17 @@
+<li class="list-group-item d-flex justify-content-between align-items-center" id="add-task-li-view">
+    <div class="col-lg-12">
+        <form action="{% url 'addTask' %}" method="post" id="add-task-form">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Tapshiriq" id="sub-task-input"
+                       aria-label="Tapshiriq" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-warning" id="add-task" type="submit"><i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-outline-warning" id="cancel-task" type="button"><i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</li>

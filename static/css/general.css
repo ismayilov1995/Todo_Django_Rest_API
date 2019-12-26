@@ -1,0 +1,84 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+.my-btn {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 8px;
+    background-color: orange;
+    color: white;
+    border-style: solid;
+    border-color: white;
+    border-width: 1px;
+}
+
+.my-btn:hover {
+    border-radius: 8px;
+    text-decoration: none;
+    border-style: solid;
+    border-color: orange;
+    border-width: 1px;
+    background-color: white;
+    color: orange;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: orange !important;
+}
+
+.login-div {
+    height: 400px;
+    width: 400px;
+    align-items: center;
+    background-color: #ff050c;
+    solid-color: #ff200f;
+    padding: 10px;
+}
+
+.brand_logo_container {
+    position: absolute;
+    height: 170px;
+    width: 170px;
+    top: -90px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: white;
+    text-align: center;
+}
+
+.user_card {
+    padding-top: 100px;
+    height: auto;
+    width: 350px;
+    margin-top: 12%;
+    margin-bottom: auto;
+    background: orange;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+}
+
+.check-task {
+    color: orange;
+}
+
+.strikethrough {
+    text-decoration: line-through;
+}
+
+@media screen and (max-width: 900px) {
+  .user_card {
+    margin-top: 23%;
+  }
+}

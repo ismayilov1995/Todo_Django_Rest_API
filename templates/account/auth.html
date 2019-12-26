@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block head_content %}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+{% endblock %}
+
+{% block body_content %}
+    <div class="row justify-content-center">
+        <div class="user_card">
+            <div class="d-flex justify-content-center">
+                <div class="brand_logo_container">
+                    <img src="{% static 'default/logo.png' %}"
+                         class="brand_logo" alt="Logo">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <form action="{% url 'loginView' %}" method="post">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        </div>
+                        {{ form.username }}
+                    </div>
+                    <div class="input-group mb-2">
+                        <div class="input-group-append">
+                            <span class="input-group-text"><i class="fas fa-key"></i></span>
+                        </div>
+                        {{ form.password }}
+                    </div>
+                    <div class="d-flex justify-content-center mt-3 login_container">
+                        <button type="submit" name="button" class="btn btn-light">Daxil ol</button>
+                    </div>
+                    <p class="text-center m-4">Hesabin yoxdursa <a href="{% url 'registerView' %}">Qeydiyyatdan Kec</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

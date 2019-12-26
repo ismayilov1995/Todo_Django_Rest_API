@@ -1,0 +1,13 @@
+<div class="col-12">
+    <div class="row justify-content-center">
+        <div class="card-columns mt-3" id="todo-card-list">
+            {% for td in todo %}
+                    {% include 'include/todo/single-todo-card.html' %}
+            {% empty %}
+                <p>Yeri ged burdan</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
