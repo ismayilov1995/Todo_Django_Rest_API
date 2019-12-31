@@ -1,11 +1,12 @@
-from django.shortcuts import get_object_or_404
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveDestroyAPIView, \
+    RetrieveUpdateDestroyAPIView, UpdateAPIView, get_object_or_404
 from rest_framework.mixins import CreateModelMixin, ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 
 from account.api.permissions import IsOwner, CanAddIfOwner
 from todos.api.pagination import TodoPagination
-from todos.api.serializers import TodoListSerializer, TodoCreateSerializer, TaskAddSerializer, TaskListDetailSerializer
+from todos.api.serializers import TodoListSerializer, TodoCreateSerializer, TaskAddSerializer, TaskListDetailSerializer, \
+    TaskDetailUpdateSerializer
 from todos.models import Tasks, Todos
 
 # Yeni to do ve siyahilar
@@ -46,7 +47,9 @@ class TodoDetails(RetrieveAPIView, RetrieveDestroyAPIView, CreateModelMixin):
         self.id = self.kwargs.get(self.lookup_field)
         return Todos.objects.filter(id=self.id)
 
-class TaskDetailsNew(RetrieveAPIView, RetrieveDestroyAPIView, CreateModelMixin):
+
+
+class TaskAddApi(RetrieveAPIView, RetrieveDestroyAPIView, CreateModelMixin):
     serializer_class = TaskAddSerializer
     permission_classes = [IsOwner]
     lookup_field = 'id'
@@ -63,8 +66,33 @@ class TaskDetailsNew(RetrieveAPIView, RetrieveDestroyAPIView, CreateModelMixin):
         Tasks.add_task(self.request.user, id, self.request.data['title'], False)
 
 
-class TaskDetails(RetrieveAPIView, RetrieveDestroyAPIView):
-    queryset = Tasks.objects.all()
-    serializer_class = TaskListDetailSerializer
+class TaskDetails(RetrieveDestroyAPIView, UpdateAPIView):
+    #serializer_class = TaskListDetailSerializer
     permission_classes = [IsOwner]
     lookup_field = 'id'
+
+    def get_serializer_class(self):
+        if self.request.method == 'PUT':
+            return TaskDetailUpdateSerializer
+        else: return TaskListDetailSerializer
+
+
+    def get_queryset(self):
+        id = self.kwargs.get(self.lookup_field)
+        return Tasks.objects.filter(id=id)
+
+    # Son task silinende to do da silinir
+    def perform_destroy(self, instance):
+        id = self.kwargs.get(self.lookup_field)
+        task = get_object_or_404(Tasks, id=id)
+        todo = get_object_or_404(Todos, id=task.todos_id)
+        instance.delete()
+        if not Tasks.objects.filter(todos=todo).exists():
+            todo.delete()
+
+    # Update ederken 'PUT' useri deyishe bilmesin
+    def perform_update(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+

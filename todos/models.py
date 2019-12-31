@@ -47,3 +47,10 @@ class Tasks(models.Model):
         todo = get_object_or_404(Todos, id=todo_id)
         new_task = Tasks.objects.create(user=user, todos=todo, title=title, is_complete=is_complete)
         return new_task
+
+    @classmethod
+    def check_task(cls, task_id, is_complete=False):
+        task = get_object_or_404(Tasks, id=task_id)
+        task.is_complete = is_complete
+        task.save()
+

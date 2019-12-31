@@ -12,7 +12,7 @@ SECRET_KEY = '8o%mx)ry&*d)+d-@o)x6)f$2$uk&@299477tk%wyeop^7)guk$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.107']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -43,13 +43,14 @@ ROOT_URLCONF = 'todo.urls'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_THROTTLE_CLASSES': (
         'rest_framework.throttling.ScopedRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
         'registerthrottle': '10/hour',
-        #'hasan' : '5/hour'
+        # 'hasan' : '5/hour'
     }
 }
 

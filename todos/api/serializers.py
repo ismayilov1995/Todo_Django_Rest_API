@@ -24,6 +24,12 @@ class TaskListDetailSerializer(ModelSerializer):
         model = Tasks
         fields = '__all__'
 
+class TaskDetailUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Tasks
+        fields = ['title', 'is_complete']
+
+
 
 class TodoListSerializer(ModelSerializer):
     tasks = serializers.HyperlinkedIdentityField(view_name='apiTodos:detailTodo', lookup_field='id')
